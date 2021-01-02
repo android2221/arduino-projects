@@ -5,6 +5,7 @@
  */
 
 #include <IRremote.h>
+#include <string>
 #include "Freenove_WS2812_Lib_for_ESP32.h"
 
 
@@ -44,7 +45,6 @@ void setup() {
     Serial.print(F("Ready to receive IR signals at pin "));
     Serial.println(IR_RECEIVE_PIN);
     strip.begin();
-    strip.setBrightness(100);
 }
 
 void loop() {
@@ -59,7 +59,7 @@ void loop() {
 
         if (wandId == 449){
           // Drew's Wand
-          strip.setLedColorData(1, m_color[0][0], m_color[0][1], m_color[0][2]);// Set color data.
+          makeRandomColor(LEDS_COUNT);
           strip.show();   // Send color data to LED, and display.
         }
 
@@ -73,4 +73,31 @@ void loop() {
     }
 
     delay(100);
+}
+
+void makeRandomColor(int ledAmount){
+  for (int i = 0; i < ledAmount; i++){
+    strip.setLedColorData(i, strip.Wheel(rand() % 254 + 1));
+  }
+}
+
+void smoothTransition(String state){
+  if (state == "off"){
+    Serial.println("turning off");
+    for(int i = 10; i >= 0; i--){
+      Serial.println(i);
+      strip.setBrightness(i * 10);
+      strip.show();
+      delay(100);
+    }
+  } else{
+    Serial.println("turning on");
+    for(int i = 0; i <= 10; i++){
+        Serial.println(i);
+        strip.setBrightness(i * 10);
+        strip.show();
+        delay(100);
+    }
+  }
+
 }
