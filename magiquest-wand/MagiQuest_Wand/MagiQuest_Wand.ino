@@ -5,7 +5,7 @@
  */
 
 #include <IRremote.h>
-#include <string>
+#include <map>
 #include "Freenove_WS2812_Lib_for_ESP32.h"
 
 
@@ -47,46 +47,24 @@ void setup() {
     strip.begin();
 }
 
-void loop() {
-    if (IrReceiver.decode()) {
-        IrReceiver.printResultShort(&Serial);
-        IrReceiver.printIRResultRawFormatted(&Serial); 
-        Serial.println();
-        Serial.println("Wand id:");
-        Serial.println(IrReceiver.results.value);
+std::map<int, int> buildColorData(int ledAmount){
+  std::map<int, int> return_map;
 
-        int wandId = IrReceiver.results.value;
-
-        if (wandId == 449){
-          // Drew's Wand
-          makeRandomColor(LEDS_COUNT);
-          strip.show();   // Send color data to LED, and display.
-        }
-
-        if (wandId == 458){
-          // Brays Wand
-          strip.setLedColorData(1, m_color[1][0], m_color[1][1], m_color[1][2]);// Set color data.
-          strip.show();   // Send color data to LED, and display.
-        }
-        
-        IrReceiver.resume(); // Receive the next value
-    }
-
-    delay(100);
-}
-
-void makeRandomColor(int ledAmount){
   for (int i = 0; i < ledAmount; i++){
-    strip.setLedColorData(i, strip.Wheel(rand() % 254 + 1));
+    //strip.setLedColorData(i, strip.Wheel(rand() % 254 + 1));
+    return_map.insert(std::pair<int,int>(i, rand() % 254 + 1));
   }
+
+  return return_map;
 }
 
-void smoothTransition(String state){
+void smoothTransitionColors(String state, std::map<int, int> colorsMap){
   if (state == "off"){
     Serial.println("turning off");
     for(int i = 10; i >= 0; i--){
-      Serial.println(i);
       strip.setBrightness(i * 10);
+      strip.setLedColorData(1, strip.Wheel(rand() % 254 + 1));
+      Serial.println(i);
       strip.show();
       delay(100);
     }
@@ -100,4 +78,35 @@ void smoothTransition(String state){
     }
   }
 
+}
+
+
+void loop() {
+    if (IrReceiver.decode()) {
+        IrReceiver.printResultShort(&Serial);
+        IrReceiver.printIRResultRawFormatted(&Serial); 
+        Serial.println();
+        Serial.println("Wand id:");
+        Serial.println(IrReceiver.results.value);
+
+        int wandId = IrReceiver.results.value;
+
+        if (wandId == 449){
+          // Drew's Wand
+          std::map<int, int> colorMap = buildColorData(LEDS_COUNT);
+          smoothTransitionColors("off", colorMap);
+          smoothTransitionColors("on", colorMap);
+          //strip.show();   // Send color data to LED, and display.
+        }
+
+        if (wandId == 458){
+          // Brays Wand
+          strip.setLedColorData(1, m_color[1][0], m_color[1][1], m_color[1][2]);// Set color data.
+          strip.show();   // Send color data to LED, and display.
+        }
+        
+        IrReceiver.resume(); // Receive the next value
+    }
+
+    delay(100);
 }
