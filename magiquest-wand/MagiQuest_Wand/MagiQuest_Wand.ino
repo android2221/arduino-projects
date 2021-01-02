@@ -10,8 +10,12 @@
 
 
 int IR_RECEIVE_PIN = 23;
+int FLICKS_TO_TURN_OFF = 5;
+
 IRrecv IrReceiver(IR_RECEIVE_PIN);
 int counter;
+std::map<int, int> colorMap;
+int flickCount = 0;
 
 // On the Zero and others we switch explicitly to SerialUSB
 #if defined(ARDUINO_ARCH_SAMD)
@@ -61,20 +65,30 @@ std::map<int, int> buildColorData(int ledAmount){
 void smoothTransitionColors(String state, std::map<int, int> colorsMap){
   if (state == "off"){
     Serial.println("turning off");
-    for(int i = 10; i >= 0; i--){
-      strip.setBrightness(i * 10);
-      strip.setLedColorData(1, strip.Wheel(rand() % 254 + 1));
+    for(int i = 100; i >= 0; i--){
+      // setting brightness
+      strip.setBrightness(i);
+      for (std::map<int, int>::iterator it = colorsMap.begin(); it != colorsMap.end(); ++it)
+      {
+        // Setting LEDS
+        strip.setLedColorData(it->first, strip.Wheel(it->second));
+      }
       Serial.println(i);
       strip.show();
-      delay(100);
+      delay(2);
     }
   } else{
     Serial.println("turning on");
-    for(int i = 0; i <= 10; i++){
+    for(int i = 0; i <= 100; i++){
         Serial.println(i);
-        strip.setBrightness(i * 10);
+        strip.setBrightness(i);
+        for (std::map<int, int>::iterator it = colorsMap.begin(); it != colorsMap.end(); ++it)
+        {
+          // Setting LEDS
+           strip.setLedColorData(it->first, strip.Wheel(it->second));
+        }
         strip.show();
-        delay(100);
+        delay(2);
     }
   }
 
@@ -91,19 +105,32 @@ void loop() {
 
         int wandId = IrReceiver.results.value;
 
-        if (wandId == 449){
-          // Drew's Wand
-          std::map<int, int> colorMap = buildColorData(LEDS_COUNT);
-          smoothTransitionColors("off", colorMap);
-          smoothTransitionColors("on", colorMap);
-          //strip.show();   // Send color data to LED, and display.
+        if (wandId == 449 || wandId == 458){
+          if (flickCount == FLICKS_TO_TURN_OFF){
+            smoothTransitionColors("off", colorMap);
+            flickCount = 0;
+            delay(5000);
+            IrReceiver.resume();
+            std::map<int, int> newMap;
+            colorMap = newMap;
+            return;
+          }
+          
+          // Drew's Wand is 449
+          if (colorMap.empty()){
+            colorMap = buildColorData(LEDS_COUNT);
+            smoothTransitionColors("on", colorMap);
+
+          }
+          else{
+            smoothTransitionColors("off", colorMap);
+            colorMap = buildColorData(LEDS_COUNT);
+            smoothTransitionColors("on", colorMap);
+          }
+
         }
 
-        if (wandId == 458){
-          // Brays Wand
-          strip.setLedColorData(1, m_color[1][0], m_color[1][1], m_color[1][2]);// Set color data.
-          strip.show();   // Send color data to LED, and display.
-        }
+        flickCount++;
         
         IrReceiver.resume(); // Receive the next value
     }
