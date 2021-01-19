@@ -23,6 +23,7 @@ const int buttonPin = 2;    // the number of the pushbutton pin
 // Variables will change:
 int buttonState;             // the current reading from the input pin
 int lastButtonState = LOW;   // the previous reading from the input pin
+int brightness;
 
 // the following variables are unsigned longs because the time, measured in
 // milliseconds, will quickly become a bigger number than can be stored in an int.
@@ -184,8 +185,15 @@ void read_button(){
     if (reading != buttonState) {
       buttonState = reading;
       if (reading == LOW){
-        // Do Random things here
-        Serial.println("button up");
+        palette_loaded = false;
+        if(brightness == 255){
+          brightness = 20;
+        } else {
+          brightness = 255;
+        }
+        Serial.println("BRIGHTNESS");
+        Serial.println(brightness);
+        FastLED.setBrightness(brightness);          
       }
       Serial.println(buttonState);
     }
@@ -207,27 +215,12 @@ void setup() {
   pinMode(buttonPin, INPUT);
 }
 
-int loopCount = 0;
-int brightness = 255;
 
 void loop()
 {  
-  loopCount++;
   // This makes it run slower, so set loopCount to something small
   // when actually printing this out
   //Serial.println(loopCount);
-  if(loopCount == 1000000){
-    palette_loaded = false;
-    loopCount = 0;
-    if(brightness == 255){
-      brightness = 20;
-    } else {
-      brightness = 255;
-    }
-    Serial.println("BRIGHTNESS");
-    Serial.println(brightness);
-    FastLED.setBrightness(brightness);
-  }
 
   if(palette_loaded == false){
      build_random_palette();
