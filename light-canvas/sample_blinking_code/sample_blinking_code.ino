@@ -17,6 +17,19 @@ FASTLED_USING_NAMESPACE
 #define LED_TYPE            WS2812B
 #define COLOR_ORDER         GRB
 
+// constants won't change. They're used here to set pin numbers:
+const int buttonPin = 2;    // the number of the pushbutton pin
+
+// Variables will change:
+int buttonState;             // the current reading from the input pin
+int lastButtonState = LOW;   // the previous reading from the input pin
+
+// the following variables are unsigned longs because the time, measured in
+// milliseconds, will quickly become a bigger number than can be stored in an int.
+unsigned long lastDebounceTime = 0;  // the last time the output pin was toggled
+unsigned long debounceDelay = 50;    // the debounce time; increase if the output flickers
+
+
 //////////////////////////////////////////////////////////////////////////
 
 CRGB leds[NUM_LEDS];
@@ -154,6 +167,35 @@ void pacifica_deepen_colors()
   }
 }
 
+void read_button(){
+  int reading = digitalRead(buttonPin);
+
+  // If the switch changed, due to noise or pressing:
+  if (reading != lastButtonState) {
+    // reset the debouncing timer
+    lastDebounceTime = millis();
+  }
+
+  if ((millis() - lastDebounceTime) > debounceDelay) {
+    // whatever the reading is at, it's been there for longer than the debounce
+    // delay, so take it as the actual current state:
+
+    // if the button state has changed:
+    if (reading != buttonState) {
+      buttonState = reading;
+      if (reading == LOW){
+        // Do Random things here
+        Serial.println("button up");
+      }
+      Serial.println(buttonState);
+    }
+  }
+
+  // save the reading. Next time through the loop, it'll be the lastButtonState:
+  lastButtonState = reading;
+
+}
+
 void setup() {
   Serial.begin(115200);
   srand (time(NULL));
@@ -161,6 +203,8 @@ void setup() {
   FastLED.addLeds<LED_TYPE,DATA_PIN,COLOR_ORDER>(leds, NUM_LEDS)
         .setCorrection( TypicalLEDStrip );
   FastLED.setMaxPowerInVoltsAndMilliamps( 5, MAX_POWER_MILLIAMPS);
+
+  pinMode(buttonPin, INPUT);
 }
 
 int loopCount = 0;
@@ -194,5 +238,5 @@ void loop()
     pacifica_loop();
     FastLED.show();
   }
-
+  read_button();
 }
