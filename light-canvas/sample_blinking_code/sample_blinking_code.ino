@@ -164,7 +164,7 @@ void setup() {
 }
 
 int loopCount = 0;
-int brightness = 100;
+int brightness = 255;
 
 void loop()
 {  
@@ -175,10 +175,10 @@ void loop()
   if(loopCount == 1000000){
     palette_loaded = false;
     loopCount = 0;
-    if(brightness == 100){
-      brightness = 5;
+    if(brightness == 255){
+      brightness = 20;
     } else {
-      brightness = 100;
+      brightness = 255;
     }
     Serial.println("BRIGHTNESS");
     Serial.println(brightness);
