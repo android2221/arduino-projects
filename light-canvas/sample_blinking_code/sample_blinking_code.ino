@@ -16,28 +16,21 @@ FASTLED_USING_NAMESPACE
 #define MAX_POWER_MILLIAMPS 500
 #define LED_TYPE            WS2812B
 #define COLOR_ORDER         GRB
-#define VNAME(x) #x
-
 
 //////////////////////////////////////////////////////////////////////////
 
 CRGB leds[NUM_LEDS];
+CRGBPalette16 currentPalettes[3];
+bool palette_loaded;
 
-void setup() {
-  Serial.begin(115200);
-  
-  FastLED.addLeds<LED_TYPE,DATA_PIN,COLOR_ORDER>(leds, NUM_LEDS)
-        .setCorrection( TypicalLEDStrip );
-  FastLED.setMaxPowerInVoltsAndMilliamps( 5, MAX_POWER_MILLIAMPS);
+
+void build_random_palette(){
+  currentPalettes[0] = get_random_palette();
+  currentPalettes[1] = get_random_palette();
+  currentPalettes[2] = get_random_palette();
+
 }
 
-void loop()
-{
-  EVERY_N_MILLISECONDS( 20) {
-    pacifica_loop();
-    FastLED.show();
-  }
-}
 
 //////////////////////////////////////////////////////////////////////////
 //
@@ -60,23 +53,9 @@ void loop()
 // The speed and scale and motion each layer varies slowly within independent 
 // hand-chosen ranges, which is why the code has a lot of low-speed 'beatsin8' functions
 // with a lot of oddly specific numeric ranges.
-//
-// These three custom blue-green color palettes were inspired by the colors found in
-// the waters off the southern coast of California, https://goo.gl/maps/QQgd97jjHesHZVxQ7
-//
-CRGBPalette16 pacifica_palette_1 = 
-    { 0x000507, 0x000409, 0x00030B, 0x00030D, 0x000210, 0x000212, 0x000114, 0x000117, 
-      0x000019, 0x00001C, 0x000026, 0x000031, 0x00003B, 0x000046, 0x14554B, 0x28AA50 };
-CRGBPalette16 pacifica_palette_2 = 
-    { 0x000507, 0x000409, 0x00030B, 0x00030D, 0x000210, 0x000212, 0x000114, 0x000117, 
-      0x000019, 0x00001C, 0x000026, 0x000031, 0x00003B, 0x000046, 0x0C5F52, 0x19BE5F };
-CRGBPalette16 pacifica_palette_3 = 
-    { 0x000208, 0x00030E, 0x000514, 0x00061A, 0x000820, 0x000927, 0x000B2D, 0x000C33, 
-      0x000E39, 0x001040, 0x001450, 0x001860, 0x001C70, 0x002080, 0x1040BF, 0x2060FF };
-
 
 const CRGBPalette16 palette_names[] = {CloudColors_p, 
-                                      CloudColors_p, 
+                                      LavaColors_p, 
                                       OceanColors_p, 
                                       ForestColors_p, 
                                       RainbowColors_p, 
@@ -86,14 +65,12 @@ const CRGBPalette16 palette_names[] = {CloudColors_p,
                                       Rainbow_gp};
 
 
-
 CRGBPalette16 get_random_palette(){
   int paletteCount = sizeof(palette_names) / sizeof(palette_names[0]);
   int RandIndex = rand() % paletteCount;
   CRGBPalette16 foundPalette = palette_names[RandIndex];
   Serial.println("Generated Palette: ");
-  Serial.print(RandIndex);
-  Serial.print(VNAME(foundPalette));
+  Serial.println(RandIndex);
   return foundPalette;
 }
 
@@ -121,10 +98,10 @@ void pacifica_loop()
   fill_solid( leds, NUM_LEDS, CRGB( 2, 6, 10));
 
   // Render each of four layers, with different scales and speeds, that vary over time
-  pacifica_one_layer( get_random_palette(), sCIStart1, beatsin16( 3, 11 * 256, 14 * 256), beatsin8( 10, 70, 130), 0-beat16( 301) );
-  pacifica_one_layer( get_random_palette(), sCIStart2, beatsin16( 4,  6 * 256,  9 * 256), beatsin8( 17, 40,  80), beat16( 401) );
-  pacifica_one_layer( get_random_palette(), sCIStart3, 6 * 256, beatsin8( 9, 10,38), 0-beat16(503));
-  pacifica_one_layer( get_random_palette(), sCIStart4, 5 * 256, beatsin8( 8, 10,28), beat16(601));
+  pacifica_one_layer( currentPalettes[0], sCIStart1, beatsin16( 3, 11 * 256, 14 * 256), beatsin8( 10, 70, 130), 0-beat16( 301) );
+  pacifica_one_layer( currentPalettes[0], sCIStart2, beatsin16( 4,  6 * 256,  9 * 256), beatsin8( 17, 40,  80), beat16( 401) );
+  pacifica_one_layer( currentPalettes[1], sCIStart3, 6 * 256, beatsin8( 9, 10,38), 0-beat16(503));
+  pacifica_one_layer( currentPalettes[2], sCIStart4, 5 * 256, beatsin8( 8, 10,28), beat16(601));
 
   // Add brighter 'whitecaps' where the waves lines up more
   //pacifica_add_whitecaps();
@@ -177,4 +154,39 @@ void pacifica_deepen_colors()
     leds[i].green= scale8( leds[i].green, 200); 
     leds[i] |= CRGB( 2, 5, 7);
   }
+}
+
+void setup() {
+  Serial.begin(115200);
+  srand (time(NULL));
+  
+  FastLED.addLeds<LED_TYPE,DATA_PIN,COLOR_ORDER>(leds, NUM_LEDS)
+        .setCorrection( TypicalLEDStrip );
+  FastLED.setMaxPowerInVoltsAndMilliamps( 5, MAX_POWER_MILLIAMPS);
+}
+
+int loopCount = 0;
+int brightness = 10;
+
+void loop()
+{  
+  loopCount++;
+  // This makes it run slower, so set loopCount to something small
+  // when actually printing this out
+  //Serial.println(loopCount);
+  if(loopCount == 1000000){
+    palette_loaded = false;
+    loopCount = 0;
+  }
+
+  if(palette_loaded == false){
+     build_random_palette();
+     palette_loaded = true;
+  }
+
+  EVERY_N_MILLISECONDS( 20) {
+    pacifica_loop();
+    FastLED.show();
+  }
+
 }
