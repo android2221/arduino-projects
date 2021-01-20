@@ -211,7 +211,7 @@ void read_button(){
 
 void setup() {
    
-  srand (time(NULL) + 23);
+  srand (analogRead(15));
 
   FastLED.addLeds<LED_TYPE,DATA_PIN,COLOR_ORDER>(leds, NUM_LEDS)
         .setCorrection( TypicalLEDStrip );
