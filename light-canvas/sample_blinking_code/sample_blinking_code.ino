@@ -210,9 +210,9 @@ void read_button(){
 }
 
 void setup() {
-  Serial.begin(115200);
-  //srand (time(NULL));
-  
+   
+  srand (time(NULL) + 23);
+
   FastLED.addLeds<LED_TYPE,DATA_PIN,COLOR_ORDER>(leds, NUM_LEDS)
         .setCorrection( TypicalLEDStrip );
   FastLED.setMaxPowerInVoltsAndMilliamps( 5, MAX_POWER_MILLIAMPS);
