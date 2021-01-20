@@ -24,6 +24,7 @@ const int buttonPin = 2;    // the number of the pushbutton pin
 int buttonState;             // the current reading from the input pin
 int lastButtonState = LOW;   // the previous reading from the input pin
 int brightness;
+bool isBright = true;
 
 // the following variables are unsigned longs because the time, measured in
 // milliseconds, will quickly become a bigger number than can be stored in an int.
@@ -185,12 +186,16 @@ void read_button(){
     if (reading != buttonState) {
       buttonState = reading;
       if (reading == LOW){
-        palette_loaded = false;
-        if(brightness == 255){
-          brightness = 20;
-        } else {
+        
+        if(isBright == true){
+            brightness = 10;
+            isBright = false;
+        }else {
+          palette_loaded = false;
           brightness = 255;
-        }
+          isBright = true;
+        }        
+        
         Serial.println("BRIGHTNESS");
         Serial.println(brightness);
         FastLED.setBrightness(brightness);          
@@ -231,5 +236,6 @@ void loop()
     pacifica_loop();
     FastLED.show();
   }
+  
   read_button();
 }
