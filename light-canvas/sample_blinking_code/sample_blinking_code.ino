@@ -206,7 +206,7 @@ void read_button(){
 
 void setup() {
   Serial.begin(115200);
-  srand (time(NULL));
+  //srand (time(NULL));
   
   FastLED.addLeds<LED_TYPE,DATA_PIN,COLOR_ORDER>(leds, NUM_LEDS)
         .setCorrection( TypicalLEDStrip );
