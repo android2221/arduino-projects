@@ -170,8 +170,17 @@ void pacifica_deepen_colors()
 }
 
 void read_button(){
-  int reading = digitalRead(buttonPin);
+  int touchInput = touchRead(T0);
+  int threshHold = 50;
+  int reading;
 
+  if(touchInput < threshHold){
+    reading = LOW;
+  } else{
+    reading = HIGH;
+  }
+  
+  
   // If the switch changed, due to noise or pressing:
   if (reading != lastButtonState) {
     // reset the debouncing timer
@@ -210,7 +219,8 @@ void read_button(){
 }
 
 void setup() {
-   
+  Serial.begin(115200);
+  
   srand (analogRead(15));
 
   FastLED.addLeds<LED_TYPE,DATA_PIN,COLOR_ORDER>(leds, NUM_LEDS)
@@ -219,7 +229,6 @@ void setup() {
 
   pinMode(buttonPin, INPUT);
 }
-
 
 void loop()
 {  
