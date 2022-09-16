@@ -199,7 +199,7 @@ void read_button(){
       if (reading == LOW){
         
         if(isBright == true){
-            brightness = 10;
+            brightness = 0;
             isBright = false;
         }else {
           palette_loaded = false;

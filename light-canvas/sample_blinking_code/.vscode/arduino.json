@@ -1,0 +1,6 @@
+{
+    "board": "esp32:esp32:esp32wrover",
+    "configuration": "PartitionScheme=default,FlashMode=qio,FlashFreq=80,UploadSpeed=921600,DebugLevel=none",
+    "sketch": "sample_blinking_code.ino",
+    "port": "/dev/ttyUSB0"
+}
