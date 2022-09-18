@@ -173,7 +173,8 @@ void pacifica_deepen_colors()
 
 void read_button(){
   int touchInput = touchRead(T0);
-  int threshHold = 50;
+  //Serial.println(touchInput);
+  int threshHold = 17;
   int reading;
 
   if(touchInput < threshHold){
@@ -199,11 +200,11 @@ void read_button(){
       if (reading == LOW){
         
         if(isBright == true){
-            brightness = 0;
+            brightness = 255;
             isBright = false;
         }else {
           palette_loaded = false;
-          brightness = 255;
+          brightness = 0;
           isBright = true;
         }        
         
@@ -228,6 +229,8 @@ void setup() {
   FastLED.addLeds<LED_TYPE,DATA_PIN,COLOR_ORDER>(leds, NUM_LEDS)
         .setCorrection( TypicalLEDStrip );
   FastLED.setMaxPowerInVoltsAndMilliamps( 5, MAX_POWER_MILLIAMPS);
+
+  FastLED.setBrightness(0);
 
   pinMode(buttonPin, INPUT);
 }
