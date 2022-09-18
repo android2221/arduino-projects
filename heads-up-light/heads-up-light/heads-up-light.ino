@@ -84,8 +84,8 @@ CRGBPalette16 get_random_palette(){
   int paletteCount = sizeof(palette_names) / sizeof(palette_names[0]);
   int RandIndex = rand() % paletteCount;
   CRGBPalette16 foundPalette = palette_names[RandIndex];
-  Serial.println("Generated Palette: ");
-  Serial.println(RandIndex);
+  // Serial.println("Generated Palette: ");
+  // Serial.println(RandIndex);
   return foundPalette;
 }
 
@@ -208,11 +208,11 @@ void read_button(){
           isBright = true;
         }        
         
-        Serial.println("BRIGHTNESS");
-        Serial.println(brightness);
+        // Serial.println("BRIGHTNESS");
+        // Serial.println(brightness);
         FastLED.setBrightness(brightness);          
       }
-      Serial.println(buttonState);
+      // Serial.println(buttonState);
     }
   }
 
@@ -222,7 +222,7 @@ void read_button(){
 }
 
 void setup() {
-  Serial.begin(115200);
+  // Serial.begin(115200);
   
   srand (analogRead(15));
 
