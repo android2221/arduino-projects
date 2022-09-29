@@ -5,7 +5,9 @@ An assistive device that allows a student to toggle a light strip on/off to call
 This build used a capacitive touch pad to toggle the light off and on. The user places the touch pad in a convenient location on a wheelchair and it activates instantly when touched. To deactivate, touch again. The light assembly is attached to a support on the wheelchair with rubberized twist ties. The color pallette changes randomly on each activation of the light.
 
 ## Photos
-<img src="./images/light-gif.gif" width="250"> <img src="./images/completed_1.jpeg" width="250"> <img src="./images/completed_2.jpeg" width="250"> <img src="./images/completed_3.jpeg" width="250"> <img src="./images/completed_4.jpeg" width="250"> <img src="./images/completed_5.jpeg" width="250"> <img src="./images/completed_6.jpeg" width="250"> <img src="./images/completed_8.jpeg" width="250"> <img src="./images/completed_7.jpeg" width="500">
+<img src="./images/light-gif.gif" width="250"> <img src="./images/completed_1.jpeg" width="250"> <img src="./images/completed_2.jpeg" width="250"> <img src="./images/completed_3.jpeg" width="250"> <img src="./images/completed_4.jpeg" width="250"> <img src="./images/completed_5.jpeg" width="250"> <img src="./images/completed_6.jpeg" width="250"> <img src="./images/completed_8.jpeg" width="250">
+
+<img src="./images/completed_7.jpeg" width="750">
 
 
 ## Wiring Diagram
