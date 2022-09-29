@@ -4,6 +4,18 @@ An assistive device that allows a student to toggle a light strip on/off to call
 ## How to use
 This build used a capacitive touch pad to toggle the light off and on. The user places the touch pad in a convenient location on a wheelchair and it activates instantly when touched. To deactivate, touch again. The light assembly is attached to a support on the wheelchair with rubberized twist ties. The color pallette changes randomly on each activation of the light.
 
+## Photos
+<img src="./images/light-gif.gif" width="175">
+<img src="./images/completed_1.jpeg" width="175">
+<img src="./images/completed_2.jpeg" width="175">
+<img src="./images/completed_3.jpeg" width="175">
+<img src="./images/completed_4.jpeg" width="175">
+<img src="./images/completed_5.jpeg" width="175">
+<img src="./images/completed_6.jpeg" width="175">
+<img src="./images/completed_8.jpeg" width="175">
+<img src="./images/completed_7.jpeg" width="350">
+
+
 ## Wiring Diagram
 ![Wiring Diagram](./images/fritzing-sketch.jpg)
 
@@ -46,7 +58,9 @@ I am not a C++ developer, so it's not as polished as it might be from someone wi
 - Run tests before sealing
 - Screw on cap for conduit body
 - Cement end cap on to the open top of the conduit tube
+- Adjust sensitivity as needed
 
 ## Adjusting sensitivity
+Tl; dr: Change the 'threshHold' variable in the 'readButton' function.
 
-## Build Photos
+Attaching a wire to a touch pin can act a bit like an antenna. Debugging through a serial port seemed to increase the threshold considerably over what happened when I was not attached to the serial port. You may need to increase this during debugging, and lower it for run time.
