@@ -25,18 +25,18 @@ This build used a capacitive touch pad to toggle the light off and on. The user 
 (1) Velcro Strip  
 (3) Lengths of 24 AWG stranded wire  
 (2) Lengths of heat shrink tubing 
-(2) Zip Ties
-(2) Rubberized twist ties
-4x4 sheet of cardboard 
-Metal tape
-Hot Glue
-PVC Conduit Cement
+(2) Zip Ties  
+(2) Rubberized twist ties  
+4x4 sheet of cardboard  
+Metal tape  
+Hot Glue  
+PVC Conduit Cement  
 
 ## Code Disclaimer
 I am not a C++ developer, so it's not as polished as it might be from someone with more experience. The light controlling code was harvested from a previous project in this repo, light-canvas. The original animation is called 'Pacifica' located here: https://gist.github.com/kriegsman/36a1e277f5b4084258d9af1eae29bac. 
 
 ## Assembly
-- Flash ESP32 with heads-up-light.ino
+- Flash ESP32 with ./heads-up-light/heads-up-light.ino
 - Feed USB Wiring through the conduit body outlet for battery pack. Attach to cable connector to hold in place
 - Trim conduit tube to size
 - Cemet conduit body to the bottom of the tube
