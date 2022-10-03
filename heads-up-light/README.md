@@ -52,6 +52,7 @@ I am not a C++ developer :shrug:, use at your own risk. The light controlling co
 - Run tests before sealing
 - Screw on cap for conduit body
 - Cement end cap on to the open top of the conduit tube
+- Attach battery pack to the flat part of the conduit body with the velcro strip
 - Adjust sensitivity as needed
 
 ## Adjusting sensitivity
