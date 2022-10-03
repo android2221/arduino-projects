@@ -10,7 +10,7 @@ This build used a capacitive touch pad to toggle the light off and on. The user 
 <img src="./images/completed_7.jpeg" width="750">
 
 
-## Wiring Diagram
+## Diagram
 ![Wiring Diagram](./images/fritzing-sketch.jpg)
 
 ## Materials Used
