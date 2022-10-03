@@ -24,7 +24,7 @@ This build used a capacitive touch pad to toggle the light off and on. The user 
 (1) Length of 18 AWG stranded wire  
 (1) Velcro Strip  
 (3) Lengths of 24 AWG stranded wire  
-(2) Lengths of heat shrink tubing 
+(2) Lengths of heat shrink tubing  
 (2) Zip Ties  
 (2) Rubberized twist ties  
 4x4 sheet of cardboard  
