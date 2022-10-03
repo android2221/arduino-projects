@@ -33,11 +33,11 @@ Hot Glue
 PVC Conduit Cement  
 
 ## Code Disclaimer
-I am not a C++ developer, so it's not as polished as it might be from someone with more experience. The light controlling code was harvested from a previous project in this repo, light-canvas. The original animation is called 'Pacifica' located here: https://gist.github.com/kriegsman/36a1e277f5b4084258d9af1eae29bac. 
+I am not a C++ developer :shrug:, use at your own risk. The light controlling code was harvested from a previous project in this repo, light-canvas. The original animation is called 'Pacifica' located here: https://gist.github.com/kriegsman/36a1e277f5b4084258d9af1eae29bac4. 
 
 ## Assembly
 - Flash ESP32 with ./heads-up-light/heads-up-light.ino
-- Feed USB Wiring through the conduit body outlet for battery pack. Attach to cable connector to hold in place
+- Feed USB Wiring through the conduit body outlet for battery pack; Attach wiring to cable connector to hold in place
 - Trim conduit tube to size
 - Cemet conduit body to the bottom of the tube
 - Cut 24 AWG stranded wire about 5 inches longer than the tube
@@ -57,4 +57,4 @@ I am not a C++ developer, so it's not as polished as it might be from someone wi
 ## Adjusting sensitivity
 Tl; dr: Change the 'threshHold' variable in the 'readButton' function.
 
-Attaching a wire to a touch pin can act a bit like an antenna. Debugging through a serial port seemed to increase the threshold considerably over what happened when I was not attached to the serial port. You may need to increase this during debugging, and lower it for run time.
+Attaching a long wire to a touch pin can act a bit like an antenna. Debugging through a serial port seemed to increase the threshold considerably over what happened when a computer was not attached to the serial port. You may need to increase this during debugging, and lower it for run time.
